@@ -1,0 +1,157 @@
+﻿@model IEnumerable<OnTapKT_Lan1.Models.SinhVien>
+
+@{
+    ViewBag.Title = "Danh sách sinh viên";
+}
+
+<h2>Danh sách sinh viên</h2>
+
+<!-- Form tìm kiếm -->
+<form method="get" action="@Url.Action("Index")">
+    <div class="action-buttons">
+        @Html.ActionLink("Tạo mới", "Create", null, new { @class = "btn btn-success" })
+        @Html.ActionLink("Hiển thị danh sách sinh viên nữ", "DanhSachNu", null, new { @class = "btn btn-success" })
+        <div>
+            <label for="searchLop">Tìm kiếm theo lớp:</label>
+            @Html.DropDownList("searchLop", ViewBag.LopList as SelectList, "Chọn lớp", new { @class = "form-control" })
+        </div>
+
+        <div>
+            <label for="searchHoTen">Tìm kiếm theo họ tên:</label>
+            <input type="text" name="searchHoTen" class="form-control" />
+        </div>
+
+        <div>
+            <label for="searchGioiTinh">Giới tính:</label>
+            <input type="radio" name="searchGioiTinh" value="true" /> Nam
+            <input type="radio" name="searchGioiTinh" value="false" /> Nữ
+        </div>
+
+        <button type="submit" class="btn btn-primary">Tìm kiếm</button>
+    </div>
+</form>
+
+<!-- Bảng hiển thị danh sách sinh viên -->
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Mã sinh viên</th>
+            <th>Họ tên</th>
+            <th>Ngày sinh</th>
+            <th>Giới tính</th>
+            <th>Điểm</th>
+            <th>Điện thoại</th>
+            <th>Email</th>
+            <th>Tên lớp</th>
+            <th>Thao tác</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.MaSinhVien</td>
+                <td>@item.HoTen</td>
+                <td>@item.NgaySinh.ToString("dd/MM/yyyy")</td>
+                <td>@(item.GioiTinh ? "Nam" : "Nữ")</td>
+                <td>@item.Diem</td>
+                <td>@item.DienThoai</td>
+                <td>@item.Email</td>
+                <td>@item.TenLop</td>
+                <td>
+                    @Html.ActionLink("Sửa", "Edit", new { id = item.MaSinhVien }) |
+                    @Html.ActionLink("Chi tiết", "Details", new { id = item.MaSinhVien }) |
+                    @Html.ActionLink("Xóa", "Delete", new { id = item.MaSinhVien })
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<h3>Điểm cao nhất: @ViewBag.DiemCaoNhat</h3>
+<h3>Điểm thấp nhất: @ViewBag.DiemThapNhat</h3>
+
+<!-- CSS -->
+<style>
+    .action-buttons {
+        display: flex;
+        gap: 15px;
+        margin-top: 20px;
+        justify-content: flex-start;
+        align-items: center;
+        width: 100%;
+        max-width: 100%;
+        flex-wrap: nowrap;
+    }
+
+    .btn-success, .btn-primary, button[type="submit"] {
+        background-color: #007bff;
+        color: white;
+        border: none;
+        padding: 6px 12px;
+        border-radius: 5px;
+        cursor: pointer;
+        white-space: nowrap;
+        min-width: 100px;
+    }
+
+        .btn-success:hover, .btn-primary:hover, button[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+
+    input[type="text"], select {
+        padding: 5px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        max-width: 200px;
+    }
+
+    form {
+        background-color: #f9f9f9;
+        border-radius: 5px;
+        padding: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        width: 100%;
+    }
+
+    h2 {
+        color: #333;
+        text-align: center;
+        font-weight: bold;
+    }
+
+    label {
+        font-weight: bold;
+        color: #555;
+        margin-bottom: 0;
+        display: inline-block;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    table, th, td {
+        border: 1px solid #ddd;
+    }
+
+    th, td {
+        padding: 12px;
+        text-align: left;
+    }
+
+    th {
+        background-color: #f2f2f2;
+        color: #333;
+        font-weight: bold;
+    }
+
+    tr:nth-child(even) {
+        background-color: #f9f9f9;
+    }
+
+    tr:hover {
+        background-color: #f1f1f1;
+    }
+</style>

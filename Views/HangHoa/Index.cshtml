@@ -1,0 +1,217 @@
+﻿@model IEnumerable<OnTapKT_Lan1.Models.HangHoa>
+@{
+    ViewBag.Title = "Danh sách hàng hóa";
+}
+
+<h2>Danh sách hàng hóa</h2>
+
+<!-- Form tìm kiếm -->
+<form method="get" action="@Url.Action("Index")">
+    <div class="action-buttons">
+        @Html.ActionLink("Tạo mới", "Create", null, new { @class = "btn btn-success" })
+        @Html.ActionLink("Xem ds HH", "HangHoaDienTu", "HangHoa", new { }, new { @class = "btn btn-success" })
+
+        <div>
+            <label for="searchDonGia">Đơn giá nhỏ hơn:</label>
+            <input type="number" name="searchDonGia" />
+        </div>
+
+        <div>
+            <label for="searchLoaiHang">Loại hàng:</label>
+            <select name="searchLoaiHang">
+                <option value="">Tất cả</option>
+                <option value="Điện tử">Điện tử</option>
+                <option value="Thực phẩm">Thực phẩm</option>
+                <option value="Gia dụng">Gia dụng</option>
+            </select>
+        </div>
+
+        <div>
+            <label for="tenHangNhap">Tên HH:</label>
+            @Html.TextBox("tenHangNhap", ViewBag.TenHangNhap as string, new { @class = "form-control" })
+        </div>
+
+        <div>
+            <label for="soLuongNhap">Số lượng:</label>
+            @Html.TextBox("soLuongNhap", ViewBag.SoLuongNhap as string, new { @class = "form-control" })
+        </div>
+
+        <div>
+            <label for="loaiHangMaxPrice">Loại hàng giá max:</label>
+            <input type="text" name="loaiHangMaxPrice" />
+        </div>
+
+        <div>
+            <label for="tenHangNhap">Tên loại hàng:</label>
+            <input type="text" name="tenHangNhap" />
+        </div>
+
+        <button type="submit" class="btn btn-primary">Tìm kiếm</button>
+    </div>
+</form>
+
+<!-- Bảng hiển thị danh sách hàng hóa -->
+<table class="table">
+    <tr>
+        <th>Mã HH</th>
+        <th>Tên HH</th>
+        <th>Ngày sản xuất</th>
+        <th>Đơn giá</th>
+        <th>Số lượng</th>
+        <th>Loại hàng</th>
+        <th>Thành tiền</th>
+        <th>Hành động</th>
+    </tr>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@item.MaHangHoa</td>
+            <td>@item.TenHangHoa</td>
+            <td>@item.NgaySanXuat.ToString("dd/MM/yyyy")</td>
+            <td>@item.DonGia</td>
+            <td>@item.SoLuong</td>
+            <td>@item.LoaiHang</td>
+            <td>@item.ThanhTien</td>
+            <td>
+                @Html.ActionLink("Chi tiết", "Details", new { id = item.MaHangHoa }) |
+                @Html.ActionLink("Sửa", "Edit", new { id = item.MaHangHoa }) |
+                @Html.ActionLink("Xóa", "Delete", new { id = item.MaHangHoa })
+            </td>
+        </tr>
+    }
+</table>
+
+<!-- Hiển thị các thông tin tính toán -->
+<h3>Tổng thành tiền của các loại hàng đã nhập: @ViewBag.TongThanhTienAll</h3>
+<h3>Trung bình thành tiền: @ViewBag.TrungBinhThanhTien</h3>
+
+@if (ViewBag.Top2MaxPrice != null)
+{
+    <h3>Hai hàng hóa có đơn giá lớn nhất của loại "@Request["loaiHangMaxPrice"]":</h3>
+    <table class="table">
+        <tr>
+            <th>Tên HH</th>
+            <th>Đơn giá</th>
+        </tr>
+        @foreach (var item in ViewBag.Top2MaxPrice)
+        {
+            <tr>
+                <td>@item.TenHangHoa</td>
+                <td>@item.DonGia</td>
+            </tr>
+        }
+    </table>
+}
+
+@*@if (ViewBag.HangHoaDienTu != null)
+{
+    <h3>Các hàng hóa có loại "Điện tử":</h3>
+    <table class="table">
+        <tr>
+            <th>Tên HH</th>
+            <th>Đơn giá</th>
+        </tr>
+        @foreach (var item in ViewBag.HangHoaDienTu)
+        {
+            <tr>
+                <td>@item.TenHangHoa</td>
+                <td>@item.DonGia</td>
+            </tr>
+        }
+    </table>
+}*@
+
+@if (!string.IsNullOrEmpty(Request["tenHangNhap"]))
+{
+    <h3>Tổng thành tiền của loại hàng "@Request["tenHangNhap"]": @ViewBag.TongThanhTien</h3>
+}
+
+<!-- CSS -->
+<style>
+    .action-buttons {
+        display: flex;
+        gap: 15px; /* Khoảng cách giữa các phần tử */
+        margin-top: 20px;
+        justify-content: flex-start; /* Căn trái các phần tử */
+        align-items: center; /* Căn giữa theo chiều dọc */
+        width: 100%; /* Chiếm hết chiều rộng màn hình */
+        max-width: 100%;
+        flex-wrap: nowrap; /* Đảm bảo tất cả phần tử nằm trên một hàng */
+    }
+
+    .btn-success, .btn-primary, button[type="submit"] {
+        background-color: #007bff;
+        color: white;
+        border: none;
+        padding: 6px 12px;
+        border-radius: 5px;
+        cursor: pointer;
+        white-space: nowrap; /* Ngăn việc tự động xuống dòng */
+        min-width: 100px; /* Chiều rộng tối thiểu cho các nút */
+    }
+
+    .btn-success:hover, .btn-primary:hover, button[type="submit"]:hover {
+        background-color: #0056b3; /* Màu nền khi hover */
+    }
+
+    input[type="number"], select, input[type="text"] {
+        padding: 5px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        /*min-width: 150px;*/ /* Đảm bảo input có kích thước tối thiểu */
+        max-width: 200px; /* Giới hạn chiều rộng tối đa cho input */
+    }
+
+    form {
+        background-color: #f9f9f9;
+        border-radius: 5px;
+        padding-top: 5px; /* Thay đổi giá trị này theo ý muốn */
+        padding-right: 10px; /* Có thể giữ nguyên hoặc thay đổi */
+        padding-bottom: 10px; /* Có thể giữ nguyên hoặc thay đổi */
+        padding-left: 10px; /* Có thể giữ nguyên hoặc thay đổi */
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        width: 100%; /* Cho phép form mở rộng toàn bộ chiều rộng */
+    }
+
+    h2 {
+        color: #333;
+        text-align: center;
+        font-weight: bold;
+    }
+
+    label {
+        font-weight: bold;
+        color: #555;
+        margin-bottom: 0;
+        display: inline-block; /* Giữ label cùng hàng với input */
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    table, th, td {
+        border: 1px solid #ddd;
+    }
+
+    th, td {
+        padding: 12px;
+        text-align: left;
+    }
+
+    th {
+        background-color: #f2f2f2;
+        color: #333;
+        font-weight: bold;
+    }
+
+    tr:nth-child(even) {
+        background-color: #f9f9f9;
+    }
+
+    tr:hover {
+        background-color: #f1f1f1;
+    }
+</style>
+

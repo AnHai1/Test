@@ -1,0 +1,36 @@
+﻿@model OnTapKT_Lan1.Models.HangHoa
+
+@{
+    ViewBag.Title = "Thông tin chi tiết hàng hóa";
+}
+
+<h2>Thông tin chi tiết hàng hóa</h2>
+
+<div class="details-view">
+    <dl class="dl-horizontal">
+        <dt>Mã hàng hóa</dt>
+        <dd>@Html.DisplayFor(model => model.MaHangHoa)</dd>
+
+        <dt>Tên hàng hóa</dt>
+        <dd>@Html.DisplayFor(model => model.TenHangHoa)</dd>
+
+        <dt>Ngày sản xuất</dt>
+        <dd>@Html.DisplayFor(model => model.NgaySanXuat)</dd>
+
+        <dt>Đơn giá</dt>
+        <dd>@Html.DisplayFor(model => model.DonGia)</dd>
+
+        <dt>Số lượng</dt>
+        <dd>@Html.DisplayFor(model => model.SoLuong)</dd>
+
+        <dt>Loại hàng</dt>
+        <dd>@Html.DisplayFor(model => model.LoaiHang)</dd>
+
+        <dt>Thành tiền</dt>
+        <dd>@Html.DisplayFor(model => model.ThanhTien)</dd>
+    </dl>
+</div>
+<div class="action-buttons">
+    @Html.ActionLink("Quay lại danh sách", "Index", null, new { @class = "btn btn-info" })
+</div>
+

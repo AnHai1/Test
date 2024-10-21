@@ -1,0 +1,41 @@
+﻿@model OnTapKT_Lan1.Models.SinhVien
+
+@{
+    ViewBag.Title = "Chi tiết sinh viên";
+}
+
+<h2>Chi tiết sinh viên</h2>
+
+<div>
+    <h4>Sinh viên</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>Mã sinh viên</dt>
+        <dd>@Model.MaSinhVien</dd>
+
+        <dt>Họ tên</dt>
+        <dd>@Model.HoTen</dd>
+
+        <dt>Ngày sinh</dt>
+        <dd>@Model.NgaySinh.ToString("dd/MM/yyyy")</dd>
+
+        <dt>Giới tính</dt>
+        <dd>@(Model.GioiTinh ? "Nam" : "Nữ")</dd>
+
+        <dt>Điểm</dt>
+        <dd>@Model.Diem</dd>
+
+        <dt>Điện thoại</dt>
+        <dd>@Model.DienThoai</dd>
+
+        <dt>Email</dt>
+        <dd>@Model.Email</dd>
+
+        <dt>Tên lớp</dt>
+        <dd>@Model.TenLop</dd>
+    </dl>
+</div>
+
+<div class="action-buttons">
+    @Html.ActionLink("Quay lại danh sách", "Index", null, new { @class = "btn btn-info" })
+</div>
